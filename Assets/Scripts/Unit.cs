@@ -14,14 +14,14 @@ public class Unit : NetworkBehaviour, ISelectable
 
     public float MoveSpeed;
 
-    protected virtual void Start()
-    {
-        controller = new PlayerController(this, new SpatialHash());
-    }
-
     private void Update()
     {
         controller?.UpdateController();
+    }
+    
+    public void Initialize(SpatialHash spatialHash)
+    {
+        controller = new PlayerController(this, spatialHash);
     }
 
     public void Selected()
