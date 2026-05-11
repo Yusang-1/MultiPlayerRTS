@@ -13,6 +13,13 @@ public class SelectedController
     {
         if (selectedUnit == null) return;
 
+        selectedUnit.controller.SetDestination(destination);
+    }
+    
+    public void ReservateUnitMove(Vector3 destination)
+    {
+        if (selectedUnit == null) return;
+
         selectedUnit.controller.AddDestination(destination);
     }
 }

@@ -45,7 +45,15 @@ public class InputManager : MonoBehaviour
                 {
                     Vector3 clickedWorldPos = ray.GetPoint(distance); // Ray 상의 해당 거리 지점의 월드 좌표를 얻음
                     Debug.Log($"Ground : {clickedWorldPos}");
-                    selectedController.UnitMove(clickedWorldPos);
+
+                    if (isReservating)
+                    {
+                        selectedController.ReservateUnitMove(clickedWorldPos); // 예약 이동
+                    }
+                    else
+                    {
+                        selectedController.UnitMove(clickedWorldPos); // 일반 이동
+                    }
                 }
             }
         }
@@ -56,6 +64,20 @@ public class InputManager : MonoBehaviour
         if (context.performed)
         {
             mousePos = context.ReadValue<Vector2>();
+        }
+    }
+
+    bool isReservating;
+    public void OnReservationOrder(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            isReservating = true;
+        }
+
+        if (context.canceled)
+        {
+            isReservating = false;
         }
     }
 }
