@@ -4,16 +4,17 @@ using System.Collections.Generic;
 public class PlayerController
 {
     private readonly Unit unit;
-    //private readonly SpatialHash spatialHash;
+    private readonly SpatialHash spatialHash;
 
     private readonly Queue<Vector3> destinations;
 
     private bool isMoving;
 
-    public PlayerController(Unit unit)
+    public PlayerController(Unit unit, SpatialHash spatialHash)
     {
         this.unit = unit;
-        //this.spatialHash = spatialHash;
+        this.spatialHash = spatialHash;
+        spatialHash.AddUnit(unit);
         destinations = new Queue<Vector3>();
     }
 
@@ -48,10 +49,10 @@ public class PlayerController
     {
         if (direction == Vector3.zero) return;
         
-        unit.transform.position += direction * Time.deltaTime;
+        unit.transform.position += Time.deltaTime * unit.MoveSpeed * direction;
 
         // 이동 후 spatialHash위치에 변경이 있는지 확인
-        // spatialHash.CheckUnitHash(unit);
+        spatialHash.CheckUnitHash(unit);
 
         // 목적지와의 거리가 standard이하면 도착으로 간주하고 다음 목적지 설정
         if (Vector3.SqrMagnitude(destination - unit.transform.position) <= standard)

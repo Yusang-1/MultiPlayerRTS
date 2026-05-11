@@ -8,16 +8,15 @@ public class Unit : NetworkBehaviour, ISelectable
     public event Action OnSelectedEnd;
 
     public PlayerController controller;
-
-    private Vector2 position;
-    public Vector2 Position => position;
+    
+    public Vector2 Position => transform.position;
     public Vector2Int CurrentKey;
 
     public float MoveSpeed;
 
     protected virtual void Start()
     {
-        controller = new PlayerController(this);
+        controller = new PlayerController(this, new SpatialHash());
     }
 
     private void Update()
