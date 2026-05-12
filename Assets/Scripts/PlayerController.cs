@@ -5,6 +5,8 @@ public class PlayerController
 {
     private readonly Unit unit;
     private readonly SpatialHash spatialHash;
+    private WalkabilityMap mapGridCreator;
+    private AStarPathfinder pathfinder;
 
     private readonly Queue<Vector3> destinations;
 
@@ -16,6 +18,8 @@ public class PlayerController
         this.spatialHash = spatialHash;
         spatialHash.AddUnit(unit);
         destinations = new Queue<Vector3>();
+        mapGridCreator = new WalkabilityMap();
+        pathfinder = new AStarPathfinder(mapGridCreator);
     }
 
     public void UpdateController()
@@ -32,14 +36,18 @@ public class PlayerController
 
     public void AddDestination(Vector3 point)
     {
-        destinations.Enqueue(point);
+        List<Vector3> points = pathfinder.FindPath(unit.transform.position, point);
+        for(int i = 0; i < points.Count; i++)
+        {
+            destinations.Enqueue(points[i]);            
+        }
     }
 
     public void SetDestination(Vector3 point)
     {
         isMoving = false;
         destinations.Clear();
-        destinations.Enqueue(point);
+        AddDestination(point);
     }
 
     private Vector3 destination;
