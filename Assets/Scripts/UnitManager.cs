@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class UnitManager : MonoBehaviour
@@ -10,7 +11,7 @@ public class UnitManager : MonoBehaviour
     {
         spatialHash = new SpatialHash();
         Instantiate(unit).Initialize(spatialHash);
+        
+        Instantiate(unit, new Vector3(6.7f, 0, 6.7f), quaternion.identity).Initialize(spatialHash);
     }
-
-    
 }

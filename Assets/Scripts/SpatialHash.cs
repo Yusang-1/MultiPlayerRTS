@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class SpatialHash
 {
-    private readonly int cellSize = 10;
+    private readonly int cellSize = 2;
     private readonly Dictionary<Vector2Int, List<Unit>> hashTable = new();
     
     // 해시 키 생성
@@ -12,7 +12,7 @@ public class SpatialHash
     // 객체 추가
     public void AddUnit(Unit unit)
     {
-        Vector2Int key = GetHashKey(unit.Position);
+        Vector2Int key = GetHashKey(unit.transform.position);
         if (!hashTable.ContainsKey(key)) hashTable[key] = new List<Unit>();
         hashTable[key].Add(unit);
         unit.CurrentKey = key;
@@ -31,7 +31,7 @@ public class SpatialHash
     
     public void CheckUnitHash(Unit unit)
     {
-        Vector2Int key = GetHashKey(unit.Position);
+        Vector2Int key = GetHashKey(unit.transform.position);
         if(unit.CurrentKey != key)
         {
             Debug.Log($"unit의 hash변경 {unit.CurrentKey} -> {key}");
@@ -41,7 +41,7 @@ public class SpatialHash
     }
     
     // 주변 해시 검색
-    public List<Unit> GetUnitsInRange(Vector2 center, float radius)
+    public List<Unit> GetUnitsInRange(Vector3 center, float radius)
     {
         List<Unit> result = new List<Unit>();
         Vector2Int centerKey = GetHashKey(center);

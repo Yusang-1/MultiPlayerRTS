@@ -8,8 +8,8 @@ public class Unit : NetworkBehaviour, ISelectable
     public event Action OnSelectedEnd;
 
     public PlayerController controller;
+    private TargetSearcher attackController;
     
-    public Vector2 Position => transform.position;
     public Vector2Int CurrentKey;
 
     public float MoveSpeed;
@@ -17,16 +17,19 @@ public class Unit : NetworkBehaviour, ISelectable
     private void Update()
     {
         controller?.UpdateController();
+        attackController?.UpdateAttackController();
     }
     
     public void Initialize(SpatialHash spatialHash)
     {
         controller = new PlayerController(this, spatialHash);
+        attackController = new TargetSearcher(this, spatialHash);
     }
 
     public void Selected()
     {
         OnSelected?.Invoke();
+        Debug.Log($"{CurrentKey}");
     }
 
     public void SelectedEnd()

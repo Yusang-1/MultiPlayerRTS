@@ -46,7 +46,6 @@ public class WalkabilityMap
     {
         int x = (vector.x - Mathf.CeilToInt(mapWidth / _cellSize)/2) * 2 + (int)(_cellSize/2);
         int y = (vector.y - Mathf.CeilToInt(mapHeight / _cellSize)/2) * 2 + (int)(_cellSize/2);
-        Debug.Log(new Vector3(x, 0, y));
         return new Vector3(x, 0, y);
     }
 
