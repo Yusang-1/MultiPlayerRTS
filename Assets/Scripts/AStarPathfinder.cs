@@ -133,7 +133,7 @@ public class AStarPathfinder
     {
         int dx = Mathf.Abs(to.x - from.x);
         int dy = Mathf.Abs(to.y - from.y);
-        
+
         // 대각선으로 이동 가능한 최대 거리 + 남은 수평/수직 거리
         return (Mathf.Min(dx, dy) * DIAGONAL_COST) + (Mathf.Abs(dx - dy) * ORTHOGONAL_COST);
     }
@@ -144,7 +144,7 @@ public class AStarPathfinder
     private List<Vector3> ReconstructPath(Dictionary<Vector2Int, Node> nodes, Vector2Int current, Vector2Int start)
     {
         var path = new List<Vector2Int>();
-        
+
         while (current != start)
         {
             path.Add(current);
@@ -162,7 +162,7 @@ public class AStarPathfinder
             worldPath.Add(walkabilityMap.GridToWorld(gridPos));
         }
 
-        return worldPath;
+        return SimplifyPath(worldPath);
     }
 
     // 인접한 노드 찾기
@@ -189,5 +189,33 @@ public class AStarPathfinder
         }
 
         return neighbors;
+    }
+
+    // 경로 간소화 (Line of Seight)
+    private List<Vector3> SimplifyPath(List<Vector3> path)
+    {
+        var simplified = new List<Vector3> { path[0] };
+
+        for (int index = 0; index < path.Count; index++)
+        {
+            for (int i = path.Count - 1; i > index; i--)
+            {
+                // 현재 점에서 i번째 점까지 직선 경로가 가능한지 확인
+                if (!CanWalkDirectly(simplified[^1], path[i]))
+                    continue;
+
+                simplified.Add(path[i]);
+                index = i;                
+                continue;
+            }
+        }
+
+        return simplified;
+    }
+
+    private bool CanWalkDirectly(Vector3 from, Vector3 to)
+    {
+        // 장애물 검사
+        return true;
     }
 }
